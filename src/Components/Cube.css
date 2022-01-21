@@ -1,0 +1,15 @@
+.cubeface {
+    width: 100%;
+    max-width: 250px;
+    max-height: 250px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 15px;
+}
+
+.cubeface .card {
+    border-radius: .4em;
+    cursor: pointer;
+    transition: 0.2s;
+}

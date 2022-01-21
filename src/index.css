@@ -7,12 +7,6 @@ html {
     padding: 0;
 }
 
-/* body {
-    display: flex;
-    justify-content: center;
-    font-family: 'Rubik', sans-serif;
-} */
-
 .main-container {
     display: flex;
     justify-content: center;
@@ -20,38 +14,6 @@ html {
     width: 100%;
 }
 
-.cubeface {
-    width: 100%;
-    max-width: 250px;
-    max-height: 250px;
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
-}
 
-.palette {
-    width: 100%;
-    max-width: 250px;
-    max-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-}
 
-.palette .card {
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 60px;
-    height: 60px;
-    border-radius: .4em;
-    cursor: pointer;
-    transition: 0.2s;
-}
 
-.cubeface .card {
-    border-radius: .4em;
-    cursor: pointer;
-    transition: 0.2s;
-}
