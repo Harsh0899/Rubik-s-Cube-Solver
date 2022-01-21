@@ -1,5 +1,8 @@
 import { useState } from "react";
 import solver from "rubiks-cube-solver";
+import Cube from "./Components/Cube";
+import Face from "./Components/Face";
+import Palette from "./Components/Palette";
 
 function CubeContainer() {
   const cubeTile = [
@@ -13,14 +16,7 @@ function CubeContainer() {
     '#595260',
     '#595260'
   ];
-  const colors = [
-    '#CD113B',
-    '#FFE227',
-    '#0F2C67',
-    '#F98404',
-    '#FCECDD',
-    '#95CD41'
-  ];
+
   const faces = {
     'f': '#595260',
     'r': '#595260',
@@ -30,12 +26,12 @@ function CubeContainer() {
     'b': '#595260'
   };
 
-  const handleFaceClick = (key) => {
-    if(currentColor !== null) {
-      cubeFace[key] = currentColor;
-      setCubeFace(cubeFace);
-      setCurrentColor(null);
-    }
+  const updateFaceColor = (key) => {
+    setCubeFace((prevState) => {
+      prevState[key]=currentColor;
+      return prevState;
+    });
+    setCurrentColor(null);
   }
  
   const handleDoneFaces = () => {
@@ -43,12 +39,12 @@ function CubeContainer() {
     setCurrentColor(null);
   }
 
-  const handleTileClick = (index) => {
-    if(currentColor !== null) {
-      cubeColors[index] = currentColor;
-      setCubeColors(cubeColors);
-      setCurrentColor(null);
-    }
+  const updateCubeColor = (index) => {
+    setCubeColors((prevState) => {
+      prevState[index]=currentColor;
+      return prevState;
+    });
+    setCurrentColor(null);
   }
 
   const getKeyByValue = (object, array) => {
@@ -66,6 +62,10 @@ function CubeContainer() {
     setIsAllFacePending(isAllFacePending-1);
   }
 
+  const updateCurrentColor = (color) => {
+    setCurrentColor(color);
+  }
+
   const handleShowSoln = () => {
     const finalStateString = cubeState.join('');
     console.log(solver(finalStateString));
@@ -81,47 +81,14 @@ function CubeContainer() {
 
   return (
     <div className="main-container">
-      {/********** Selecting FACES of the cube **********/}
-      {isFacePending && <div className="faces">
-        {Object.keys(cubeFace).map((key, index) => (
-          <div 
-            key={index} 
-            className="card" 
-            style={{
-              background: cubeFace[key]
-            }}
-            onClick={() => handleFaceClick(key)}
-          >
-            <p>{key}</p>
-          </div>
-        ))}
+      {isFacePending && <Face cubeFace={cubeFace} onFaceClick={updateFaceColor}>
         <button onClick={handleDoneFaces}>Done</button>
-      </div>}
-
-      {/********** Selecting COLORS of the cube **********/}
-      {!isFacePending && <div className="cubeface">
-        {cubeColors.map((color, index) => (
-          <div key={index} className="card" style={{
-              background: color
-            }}
-            onClick={() => handleTileClick(index)}
-          />
-        ))}
+      </Face>}
+      {!isFacePending && <Cube currentColor={currentColor} cubeColors={cubeColors} onTileClick={updateCubeColor} >
         {isAllFacePending !== 0 ? <button onClick={handleNextFace}>Next Face</button> : null}
         {!isAllFacePending && <button onClick={handleShowSoln}>Show Solution</button>}
-      </div>}
-
-      {/********** COLOR PALETTE **********/}
-      <div className="palette">
-        {colors.map((color, index) => (
-          <div key={index} className="card" style={{
-              background: color,
-              boxShadow: color === currentColor ? "0 0 5px #000" : "",
-            }}
-            onClick={() => setCurrentColor(color)}
-          />
-        ))}
-      </div>
+      </Cube>}
+      <Palette onSelectColor={updateCurrentColor} currentColor={currentColor}/>
     </div>
   );
 }
